@@ -185,9 +185,7 @@ export default function CategoryScreen({ navigation }) {
         <TouchableOpacity
           key={i}
           style={styles.imageItem}
-          onPress={() =>
-            navigation.navigate('ImageSearch', { category: item.label })
-          }
+         
         >
           <View style={styles.imageWrapper}>
             <Image source={item.img} style={styles.image} resizeMode="cover" />

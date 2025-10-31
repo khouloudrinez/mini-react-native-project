@@ -16,7 +16,12 @@ export default function App() {
     setReady(true);
   };
 
-  React.useEffect(() => { loadFonts(); }, []);
+  React.useEffect(() => {
+    loadFonts();
+
+    // 🧼 Uncomment this block to clear saved addresses once
+    persistor.purge().then(() => console.log('✅ Redux data cleared'));
+  }, []);
 
   if (!ready) return null;
 
