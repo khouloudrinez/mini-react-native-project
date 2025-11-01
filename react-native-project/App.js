@@ -20,7 +20,7 @@ export default function App() {
     loadFonts();
 
     
-    persistor.purge().then(() => console.log('✅ Redux data cleared'));
+    //persistor.purge().then(() => console.log('Redux data cleared'));
   }, []);
 
   if (!ready) return null;
