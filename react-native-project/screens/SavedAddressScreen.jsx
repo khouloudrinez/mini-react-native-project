@@ -1,4 +1,4 @@
-// /screens/SavedAddressScreen.jsx
+
 import React from 'react';
 import {
   View,
@@ -21,7 +21,7 @@ export default function SavedAddressScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Custom header */}
+     
       <View style={styles.header}>
       <TouchableOpacity
         onPress={() => {
@@ -54,6 +54,8 @@ export default function SavedAddressScreen({ navigation }) {
             onSelect={() => dispatch(setActive(item.id))}
           />
         )}
+
+        
         ListEmptyComponent={
           <View style={{ alignItems: 'center', marginTop: 40 }}>
             <Text style={{ fontFamily: 'Rubik', color: '#999' }}>

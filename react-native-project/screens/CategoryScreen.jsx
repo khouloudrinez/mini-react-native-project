@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 
-// Local assets (add files to these paths if not present)
+// Local assets 
 import LifestyleImg from '../assets/images/mens/Lifestyle.jpg';
 import training from '../assets/images/mens/training.jpg';
 import running from '../assets/images/mens/running.jpg';
@@ -198,7 +198,7 @@ export default function CategoryScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} />
@@ -206,7 +206,7 @@ export default function CategoryScreen({ navigation }) {
         <Text style={styles.headerTitle}>Categories</Text>
       </View>
 
-      {/* Search bar */}
+      
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#909090" style={{ marginLeft: 10 }} />
         <TextInput
@@ -218,9 +218,9 @@ export default function CategoryScreen({ navigation }) {
         />
       </View>
 
-      {/* Content */}
+     
       <View style={styles.mainContent}>
-        {/* Left Sidebar */}
+        
         <View style={styles.sidebar}>
           {['Mens', 'Womens', 'Kids', 'Equipments', 'Sports', 'Offers'].map((item, index) => (
             <TouchableOpacity key={index} onPress={() => setSelectedCategory(item)}>
@@ -236,11 +236,11 @@ export default function CategoryScreen({ navigation }) {
           ))}
         </View>
 
-        {/* Right Content */}
+      
         <ScrollView style={styles.rightContent} showsVerticalScrollIndicator={false}>
       {Object.keys(filteredImages).map((key) => (
   <View key={key}>
-    {/* Always show section title (even in search) */}
+    
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>
         {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -257,7 +257,7 @@ export default function CategoryScreen({ navigation }) {
       )}
     </View>
 
-    {/* Show items: all when searching, or if section expanded */}
+    
     {(isSearching || expanded[key]) && renderGrid(filteredImages[key])}
 
     <View style={styles.divider} />

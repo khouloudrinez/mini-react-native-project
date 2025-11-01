@@ -1,4 +1,4 @@
-// /components/AddressItem.jsx
+
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   radioInner: {
     width: 10,
     height: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.green,
     borderRadius: 5,
   },
 });

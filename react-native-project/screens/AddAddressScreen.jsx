@@ -15,8 +15,10 @@ import { SafeAreaView } from 'react-native';
 import { addAddress } from '../redux/store';
 import { colors } from '../theme/colors';
 import { Ionicons } from '@expo/vector-icons';
+import CountryPicker from 'react-native-country-picker-modal';
 
-const categoryList = ['Appartment', 'House', 'Office'];
+
+const categoryList = ['Apartment', 'House', 'Office'];
 
 export default function AddAddressScreen({ navigation }) {
   const [category, setCategory] = useState('Apartment');
@@ -29,29 +31,42 @@ export default function AddAddressScreen({ navigation }) {
   const [mobile, setMobile] = useState('');
   const [label, setLabel] = useState('');
 
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
+const [countryCode, setCountryCode] = useState('QA'); // default: Qatar
+const [callingCode, setCallingCode] = useState('974');
+
+
   const dispatch = useDispatch();
 
-  const handleSave = () => {
-    if (!street.trim() || !mobile.trim()) return;
+const handleSave = () => {
+  if (!street.trim() || !mobile.trim()) return;
 
-    dispatch(
-      addAddress({
-        id: Date.now().toString(),
-        title: `${category} (${label || "My Address"})`,
-        details: `${street}${zone ? ', ' + zone : ''}${building ? ', ' + building : ''}${floor ? ', Floor ' + floor : ''}${aptNumber ? ', Apt ' + aptNumber : ''}`,
-        mobile: `+974 ${mobile}`,
-      })
-    );
 
-    navigation.goBack();
-  };
+  const line1Parts = [street, zone, building].filter(Boolean).join(', ');
+  const line2Parts = [floor, aptNumber].filter(Boolean).join(', ');
+  const fullDetails = [line1Parts, line2Parts].filter(Boolean).join('\n');
+
+  dispatch(
+    addAddress({
+      id: Date.now().toString(),
+      title: `${category} (${label || 'My Address'})`,
+      details: fullDetails,
+      mobile: `+${callingCode} ${mobile}`,
+      codeCountry: countryCode,
+    })
+  );
+
+  navigation.goBack();
+};
+
+
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: colors.white }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      {/* Custom Header */}
+      
    <SafeAreaView style={styles.safeArea}>
   <View style={styles.header}>
         <TouchableOpacity onPress={()  =>  navigation.goBack()}>
@@ -64,7 +79,7 @@ export default function AddAddressScreen({ navigation }) {
 
       </SafeAreaView>
       <ScrollView contentContainerStyle={styles.container}>
-        {/* Segmented control */}
+      
         <View style={styles.segmentWrap}>
           {categoryList.map((c) => (
             <TouchableOpacity
@@ -79,7 +94,7 @@ export default function AddAddressScreen({ navigation }) {
           ))}
         </View>
 
-        {/* Inputs */}
+        
         <View style={styles.row}>
           <View style={styles.half}>
             <TextInput
@@ -138,24 +153,52 @@ export default function AddAddressScreen({ navigation }) {
           onChangeText={setDirections}
         />
 
-        <View style={[styles.phoneRow, { marginTop: 12 }]}>
-          <TouchableOpacity style={styles.flagBox}>
-            <Image
-              source={{ uri: "https://flagcdn.com/w320/qa.png" }}
-              style={{ width: 24, height: 24, borderRadius: 12 }}
-            />
-            <Ionicons name="chevron-down" size={18} color="#555" />
-          </TouchableOpacity>
+       <View style={[styles.phoneContainer, { marginTop: 12 }]}>
+ 
+  <TouchableOpacity
+    style={styles.countryBox}
+    onPress={() => setShowCountryPicker(true)}
+    activeOpacity={0.8}
+  >
+    <Image
+      source={{ uri: `https://flagcdn.com/w320/${countryCode.toLowerCase()}.png` }}
+      style={{ width: 24, height: 24, borderRadius: 12 }}
+    />
+    <Ionicons name="chevron-down" size={18} color="#555" />
+  </TouchableOpacity>
 
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="+974 30404379"
-            placeholderTextColor="#bdbdbd"
-            keyboardType="phone-pad"
-            value={mobile}
-            onChangeText={setMobile}
-          />
-        </View>
+
+  <View style={styles.dividerLine} />
+
+ 
+  <Text style={styles.countryCode}>+{callingCode}</Text>
+  <TextInput
+    style={styles.phoneInput}
+    placeholder="30404379"
+    placeholderTextColor="#bdbdbd"
+    keyboardType="phone-pad"
+    value={mobile}
+    onChangeText={setMobile}
+  />
+
+  
+  {showCountryPicker && (
+    <CountryPicker
+      withFilter
+      withFlag
+      withCallingCode
+      withEmoji
+      onSelect={(country) => {
+        setCountryCode(country.cca2);
+        setCallingCode(country.callingCode[0]);
+        setShowCountryPicker(false);
+      }}
+      onClose={() => setShowCountryPicker(false)}
+      visible={showCountryPicker}
+    />
+  )}
+</View>
+
 
         <TextInput
           style={[styles.input, { marginTop: 12, marginBottom: 120 }]}
@@ -166,7 +209,7 @@ export default function AddAddressScreen({ navigation }) {
         />
       </ScrollView>
 
-      {/* Save Button */}
+      
       <View style={styles.saveWrap}>
         <TouchableOpacity style={styles.saveBtn} onPress={handleSave} activeOpacity={0.90}>
           <Text style={styles.saveText}>SAVE ADDRESS</Text>
@@ -224,8 +267,8 @@ const styles = StyleSheet.create({
  borderWidth: 1,
     borderColor: "#e0e0e0",
     borderRadius: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 18,   // bigger input
+    paddingHorizontal: 14,
+    paddingVertical: 18,   
     fontFamily: "Rubik",
     fontSize: 16,
     color: colors.black,
@@ -238,14 +281,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   half: {
-    width: "48%",
+    width: "49%",
   },
 
-  phoneRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
+
 flagBox: {
   flexDirection: "row",
   alignItems: "center",
@@ -253,22 +292,43 @@ flagBox: {
   borderWidth: 1,
   borderColor: "#e0e0e0",
   borderRadius: 14,
-  paddingHorizontal: 16,  // match input
-  paddingVertical: 15,    // match input
-  marginBottom: 12,       // spacing like other inputs
+  paddingHorizontal: 16,  
+  paddingVertical: 15,    
+  marginBottom: 12,      
+},
+phoneContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderWidth: 1,
+  borderColor: '#e0e0e0',
+  borderRadius: 14,
+  paddingHorizontal: 14,
+  paddingVertical: 14,
+},
+countryBox: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 4,
+},
+dividerLine: {
+  width: 1,
+  height: 26,
+  backgroundColor: '#e0e0e0',
+  marginHorizontal: 10,
+},
+countryCode: {
+  fontFamily: 'Rubik',
+  fontSize: 16,
+  color: colors.black,
+  marginRight: 6,
 },
 phoneInput: {
   flex: 1,
-  borderWidth: 1,
-  borderColor: "#e0e0e0",
-  borderRadius: 14,
-  paddingHorizontal: 16,  // same as normal input
-  paddingVertical: 18,    // same as normal input
-  fontFamily: "Rubik",
+  fontFamily: 'Rubik',
   fontSize: 16,
   color: colors.black,
-  marginBottom: 12,       // add spacing between inputs
 },
+
 
   saveWrap: {
     position: "absolute",

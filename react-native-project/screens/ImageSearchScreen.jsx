@@ -70,7 +70,7 @@ export default function ImageSearchScreen({ navigation }) {
 
   const renderCard = ({ item }) => (
     <View style={styles.card}>
-      {/* Image section */}
+     
     <View style={styles.imageContainer}>
        <Image source={item.image} style={styles.image} resizeMode="cover" />
 
@@ -87,17 +87,17 @@ export default function ImageSearchScreen({ navigation }) {
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           {favorites.includes(item.id) ? (
-          // filled green heart (fill from prop)
+          
            <HeartFilled width={20} height={20} fill="#1AAF31" style={styles.heartImage} />
           ) : (
-            // dark outline heart (stroke only)
+           
             <HeartOutline width={20} height={20} color="#0A0A0A" strokeWidth={1.5} style={styles.heartImage} />
           )}
         </TouchableOpacity>
         
       </View>
 
-      {/* Info row */}
+      
       <View style={styles.infoRow}>
         <View style={{ flex: 1 }}>
           <Text style={styles.price}>{item.price}</Text>
@@ -114,7 +114,7 @@ export default function ImageSearchScreen({ navigation }) {
 
   return (
     <View style={styles.screen}>
-      {/* Header */}
+     
       <View style={styles.header}>
         <TouchableOpacity style={styles.headerLeft} onPress={() => navigation?.goBack?.()}>
           <Ionicons name="arrow-back" size={26} color={colors.black} />
@@ -130,7 +130,7 @@ export default function ImageSearchScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Top-left small image */}
+      
       <View style={styles.topRow}>
         <View style={styles.topImageBox}>
           <Image
@@ -141,7 +141,7 @@ export default function ImageSearchScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Filter chips */}
+     
       <View style={styles.filtersRow}>
         {['Top Sales', 'Newest', 'Price Low to High', 'Price High to Low'].map((f, i) => (
           <TouchableOpacity key={i} style={styles.filterChip}>
@@ -150,7 +150,7 @@ export default function ImageSearchScreen({ navigation }) {
         ))}
       </View>
 
-      {/* Products grid */}
+     
       <FlatList
         data={products}
         renderItem={renderCard}
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   header: {
     height: 46,
     marginBottom: 8,
-    // place left/right icons and center title
+    
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
    width: 36,
     height: 36,
    borderRadius: 18,
-    backgroundColor: '#F7F7F7', // same tone as filter chips
+    backgroundColor: '#F7F7F7', 
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 
-  // filters
+  
   filtersRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -257,13 +257,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik'
   },
 
-  // grid
+ 
   colWrapper: {
     justifyContent: 'space-between',
     marginBottom: 14,
   },
 
-  // card
+
   card: {
     width: cardWidth,
     backgroundColor: colors.white,
@@ -277,8 +277,8 @@ imageContainer: {
     width: '100%',
     height: 170,
     backgroundColor: '#F8F8F8',
-    borderRadius: 14,    // give the image its own rounded corners (top + bottom)
-    overflow: 'hidden',  // ensure image corners are clipped
+    borderRadius: 14,    
+    overflow: 'hidden',  
   },
   image: {
     width: '100%',
@@ -304,11 +304,11 @@ imageContainer: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.white, // white interior
+    backgroundColor: colors.white, 
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#F0F0F0', // keep border light (not green)
+    borderColor: '#F0F0F0', 
   },
   heartImage: {
     width: 20,
@@ -319,7 +319,7 @@ imageContainer: {
     infoRow: {
 
    flexDirection: 'row',
-    alignItems: 'flex-start', // align children to top so plus stays level with first line
+    alignItems: 'flex-start', 
    paddingHorizontal: 10,
     paddingVertical: 8,
    },
@@ -345,7 +345,7 @@ imageContainer: {
    borderWidth: 1,
    borderColor: '#EAEAEA',
     marginLeft: 8,
-    alignSelf: 'flex-start', // keep the + aligned with the top of the title block
+    alignSelf: 'flex-start', 
    },
   plusText: {
     color: colors.green,
